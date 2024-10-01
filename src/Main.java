@@ -11,8 +11,8 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class Main {
-
     // Credits to https://www.mymiller.name/wordpress/programming/java/spring/ansi-colors/ for the colour codes
+
     // Regular text colors
     public static final String RESET = "\u001B[0m";
     public static final String BLUE = "\u001B[34m";
@@ -29,7 +29,6 @@ public class Main {
     // Bright background colors
     public static final String BRIGHT_BACKGROUND_BLACK = "\u001B[40;1m";
     public static final String BRIGHT_BACKGROUND_RED = "\u001B[41;1m";
-    public static final String BRIGHT_BACKGROUDN_WHITE = "\u001B[47m";
 
     static Random random = new Random();
 
