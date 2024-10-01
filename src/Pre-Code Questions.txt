@@ -1,0 +1,60 @@
+Question 1:
+Generally describe how the game works [3]
+The game works by having two cards selected at random. The goal of the game is to find the common
+element among the two selected images. The person who spots the common element the quickest is the
+winner of the game.
+
+Question 2: [2]
+The version of spot it that I play has 8 images per card and 55 cards.  Go ahead and generate a game
+using the following site. Play a few times… who plays it best in your group?
+http://aaronbarker.net/spot-it/spot-it.html
+Aaron Barker’s version has 57 cards for 8 images… Why do you think there is a discrepancy?
+It could be that it's easier to mass-produce cards of 55 as opposed to full sets of 57.
+
+Question 3: [3]
+In the game a game with 6 images per card, how many unique images do we need?
+Go look at Aaron Barkers version and figure it out.. Work together as a team…
+communication and organization is key here or you will repeat/forget a card.
+
+The equation for the number of cards needed per game is n^2 + n + 1. n represents the prime number before
+the number of cards, and in the case of 6, that's five.
+As such:
+
+5^2 + 5 + 1 = 31
+
+Therefore, 31 cards would be needed in order to have a game with 6 images per card.
+
+Question 4:
+https://docs.google.com/spreadsheets/d/1CQiLa6BgE2E5kjHDrl89eFEr8VWLj5q4WhaS0o_5Cj4/edit?usp=sharing
+(hmmm)
+
+Question 5:
+https://docs.google.com/spreadsheets/d/1E_Dw2dxY0gVWFAMhACsclwNwW0BoafAzedvba267YI4/edit?usp=sharing
+
+Question 6: You don’t need to do the whole thing, but how many images would there be if you wanted 6
+images a card (Spot it JR)?  And 8 images (OG spot it)
+
+For 6:
+31 (from the previous question)
+For 8:
+7^2 + 7 + 1
+= 56 + 1
+= 57
+
+Question 7:
+The numbers needed per game is a prime number. The number of cards per game is equal to the
+images per card multiplied by the prime number before the number plus one.
+For example:
+
+---------------------------------------------------------------------
+  N - Prime numbers | Images per Card | Number of Cards | Equation  |
+---------------------------------------------------------------------
+  2                 | 3               | 7               |2 x 3 + 1  |
+---------------------------------------------------------------------
+  3                 | 4               | 13              |3 x 4 + 1  |
+---------------------------------------------------------------------
+  5                 | 6               | 31              | 5 x 6 + 1 |
+---------------------------------------------------------------------
+  7                 | 8               | 57              | 7 x 8 + 1 |
+---------------------------------------------------------------------
+
