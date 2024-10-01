@@ -196,11 +196,6 @@ public class Main {
     } // for fun hehe
 
     public static int startMenu() {
-//        print( BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "Please select an option from one of the following:" + RESET, 0);
-//        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA + "[1] Original " + RESET, 0);
-//        print(BRIGHT_BACKGROUND_BLACK + BLUE + "[2] Input-based " + RESET, 0);
-//        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_YELLOW + "[3] Restore last score" + RESET, 0);
-//        print(BRIGHT_BACKGROUND_RED + BLUE + "[4] Quit (you don't want too ooooo)" + RESET, 0);
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "Please select an option from one of the following:" + RESET, 0);
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "--------------------------------------------------" + RESET, 0);
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[1]  |"+ BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA +"                  Original                 " + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE +"|" + RESET, 0);
@@ -312,7 +307,6 @@ public class Main {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        long start = System.currentTimeMillis();
         printMsgWithProgressBar("Generating the " + RED + "COOLEST " + RESET + "game of SpotIt!", 50, 60);
         print("", 0);
         print(GREEN + "Generation Complete. Welcome!" + RESET, 0);
