@@ -83,55 +83,35 @@ public class Main {
         }
     }
 
-    public static void customValues() {
-
-        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_BLUE + "Please input thirteen names/items you wish to include", 0);
-        String a = scanner.nextLine();
-        String b = scanner.nextLine();
-        String c = scanner.nextLine();
-        String d = scanner.nextLine();
-        String e = scanner.nextLine();
-        String f = scanner.nextLine();
-        String g = scanner.nextLine();
-        String h = scanner.nextLine();
-        String i = scanner.nextLine();
-        String j = scanner.nextLine();
-        String k = scanner.nextLine();
-        String l = scanner.nextLine();
-        String m = scanner.nextLine();
-
-        String[][] modifiedSet = {
-                {a, b, c, d}, // Card One
-                {a, e, f, g}, // Card Two
-                {a, h, i, j}, // Card Three
-                {a, k, l, m}, // Card Four
-                {b, e, h, k}, // Card Five
-                {b, f, i, l}, // Card Six
-                {b, g, j, m}, // Card Seven
-                {c, e, j, l}, // Card Eight
-                {c, f, h, m}, // Card Nine
-                {c, g, i, k}, // Card Ten
-                {d, e, i, m}, // Card Eleven
-                {d, f, j, k}, // Card Twelve
-                {d, g, h, l} // Card Thirteen
-        };
-
+    public static void processValues(int numArray, String[][] set) {
         // Generates two random values for selecting the cards
-        int firstCardRow = random.nextInt(standardMaxRows - standardMin + 1) + standardMin;
-        int secondCardRow = random.nextInt(standardMaxRows - standardMin + 1) + standardMin;
+
+        // TODO add exception statement things in the main body
+
+        int maxRows = 0;
+
+        if (numArray == 3) {
+            maxRows = 6;
+        }
+        else if (numArray == 4) {
+            maxRows = 12;
+        }
+
+        int firstCardRow = random.nextInt(maxRows);
+        int secondCardRow = random.nextInt(maxRows);
 
         // Prevents cards from being the same value
         if (firstCardRow == secondCardRow) {
             firstCardRow += 1;
         }
-        if (firstCardRow == 13) {
+        if (firstCardRow == maxRows) {
             firstCardRow -= 1;
         }
 
         // Picks card A at random
-        List<String> cardA = new ArrayList<>(Arrays.asList(modifiedSet[firstCardRow]).subList(0, 4));
+        List<String> cardA = new ArrayList<>(Arrays.asList(set[firstCardRow]).subList(0, numArray));
         // Picks card B at random
-        List<String> cardB = new ArrayList<>(Arrays.asList(modifiedSet[secondCardRow]).subList(0, 4));
+        List<String> cardB = new ArrayList<>(Arrays.asList(set[secondCardRow]).subList(0, numArray));
 
         // Shuffles Cards
         Collections.shuffle(cardA);
@@ -182,8 +162,85 @@ public class Main {
                 for (String item : cardB) {
                     print(item, 0);
                 }
-
             }
+        }
+    }
+
+    public static void customValues() {
+
+        print("Please pick how many elements you want per card (A or B):", 0);
+        print("---------------------------------------------------------", 0);
+        print("      A)     3                             B)     4      ", 0);
+
+        String temp = scanner.nextLine();
+        int numElementsPerCard = 0;
+
+        if (temp.equalsIgnoreCase("a")) {
+            numElementsPerCard = 3;
+        } else if (temp.equalsIgnoreCase("b")) {
+            numElementsPerCard = 4;
+        } else {
+            print("Please put in a valid input!", 0);
+            temp = scanner.nextLine();
+        }
+
+        if (numElementsPerCard == 4) {
+            print(BRIGHT_BACKGROUND_BLACK + BRIGHT_BLUE + "Please input thirteen names/items you wish to include", 0);
+            String a = scanner.nextLine();
+            String b = scanner.nextLine();
+            String c = scanner.nextLine();
+            String d = scanner.nextLine();
+            String e = scanner.nextLine();
+            String f = scanner.nextLine();
+            String g = scanner.nextLine();
+            String h = scanner.nextLine();
+            String i = scanner.nextLine();
+            String j = scanner.nextLine();
+            String k = scanner.nextLine();
+            String l = scanner.nextLine();
+            String m = scanner.nextLine();
+
+            String[][] modifiedSet = {
+                    {a, b, c, d}, // Card One
+                    {a, e, f, g}, // Card Two
+                    {a, h, i, j}, // Card Three
+                    {a, k, l, m}, // Card Four
+                    {b, e, h, k}, // Card Five
+                    {b, f, i, l}, // Card Six
+                    {b, g, j, m}, // Card Seven
+                    {c, e, j, l}, // Card Eight
+                    {c, f, h, m}, // Card Nine
+                    {c, g, i, k}, // Card Ten
+                    {d, e, i, m}, // Card Eleven
+                    {d, f, j, k}, // Card Twelve
+                    {d, g, h, l} // Card Thirteen
+            };
+
+            // Generates two random values for selecting the cards
+            processValues(4, modifiedSet);
+        }
+        else if (numElementsPerCard == 3) {
+                print(BRIGHT_BACKGROUND_BLACK + BRIGHT_BLUE + "Please input seven names/items you wish to include", 0);
+                String a = scanner.nextLine();
+                String b = scanner.nextLine();
+                String c = scanner.nextLine();
+                String d = scanner.nextLine();
+                String e = scanner.nextLine();
+                String f = scanner.nextLine();
+                String g = scanner.nextLine();
+
+                String[][] modifiedSet = {
+                        {a, b, c},
+                        {a, d, e},
+                        {a, f, g},
+                        {b, d, f},
+                        {b, e, g},
+                        {c, d, g},
+                        {c, e, f}
+                };
+
+                // Generates two random values for selecting the cards
+                processValues(3, modifiedSet);
         }
     }
 
