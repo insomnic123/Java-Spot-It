@@ -24,6 +24,7 @@ public class Main {
     public static final String BRIGHT_WHITE = "\u001B[37;1m";
     public static final String RED = "\u001B[1;91m";
     public static final String GREEN = "\u001B[1;92m";
+    public static final String CYAN = "\u001B[0;36m";
 
     // Bright background colors
     public static final String BRIGHT_BACKGROUND_BLACK = "\u001B[40;1m";
@@ -255,7 +256,9 @@ public class Main {
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[1]  |"+ BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA +"                  Original                 " + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE +"|" + RESET, 0);
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[2]  | " + BRIGHT_BACKGROUND_BLACK + BLUE + "               Input-based                " + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "|" + RESET, 0);
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[3]  | " + BRIGHT_BACKGROUND_BLACK + BRIGHT_YELLOW + "            Restore last score        " + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "    |" + RESET, 0);
-        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[4]  |       " + BRIGHT_BACKGROUND_RED + BLUE + "Quit (you don't want too ooooo)" + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "     |" + RESET, 0);
+        //TODO figure out why this is broken
+        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[4]  | " + BRIGHT_BACKGROUND_BLACK + CYAN + "            Timed Game Variant        " + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "    |" + RESET, 0);
+        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[5]  |       " + BRIGHT_BACKGROUND_RED + BLUE + "Quit (you don't want too ooooo)" + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "     |" + RESET, 0);
 
         int input;
 
@@ -292,6 +295,20 @@ public class Main {
         print(String.valueOf(elapsedTime), 0);
     }
 
+    public static void timedGameVariant(int difficulty) {
+        switch(difficulty){
+            case 1:
+                processValues(4, 1, 3, standardSet);
+                return;
+            case 2:
+                processValues(4, 1, 5, standardSet);
+                return;
+            case 3:
+                processValues(4, 1, 10, standardSet);
+                break;
+        }
+    }
+
     public static void main(String[] args) throws InterruptedException {
         printMsgWithProgressBar("Generating the " + RED + "COOLEST " + RESET + "game of SpotIt!", 50, 60);
         print("", 0);
@@ -313,6 +330,22 @@ public class Main {
                     print("Your last score was: " + score, 0);
                     break;
                 case 4:
+                    print("  Please enter the difficulty :)  ", 0);
+                    print("----------------------------------", 0);
+                    print("A) Easy   B) Medium  C) Impossible", 0);
+                    String temp = scanner.nextLine();
+                    int difficulty = 0;
+                    if (temp.equalsIgnoreCase("A")) {
+                        difficulty = 1;
+                    }
+                    else if (temp.equalsIgnoreCase("B")) {
+                        difficulty = 2;
+                    }
+                    else if (temp.equalsIgnoreCase("C")) {
+                        difficulty = 3;
+                    }
+                    timedGameVariant(difficulty);
+                case 5:
                     int max = goodbyeMessages.length;
                     int index = random.nextInt(max - 1);
                     print(BRIGHT_BACKGROUND_BLACK + RED + goodbyeMessages[index] + RESET, 0);
