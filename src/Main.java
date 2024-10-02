@@ -7,6 +7,14 @@ Last Edit Date: INSERT TIME
 Ethics Declaration: “This code is my own work”
 */
 
+/* TODO Overall
+Current errors
+- Quit doesn't work in the first instance
+- Input mismatch errors should be fixed therough the use of loops
+- Asthetics not popping off
+
+ */
+
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -24,7 +32,7 @@ public class Main {
     public static final String BRIGHT_WHITE = "\u001B[37;1m";
     public static final String RED = "\u001B[1;91m";
     public static final String GREEN = "\u001B[1;92m";
-    public static final String CYAN = "\u001B[0;36m";
+    public static final String CYAN = "\u001B[0;96m";
 
     // Bright background colors
     public static final String BRIGHT_BACKGROUND_BLACK = "\u001B[40;1m";
@@ -82,84 +90,103 @@ public class Main {
 
     public static void processValues(int numArray, int mode, int numRounds, String[][] set) {
         // Generates two random values for selecting the cards
-
+        long startTime = System.nanoTime();
         // TODO add exception statement things in the main body
         String word = "";
+
+        long permittedTime = 0;
+        if (mode == 1 || mode == 2) {
+            permittedTime = startTime + Long.MAX_VALUE;
+        }
+        if (mode == 31) {
+            permittedTime = startTime + 1_000_000_000L *25;
+        }
+        if (mode == 32) {
+            permittedTime = startTime + 1_000_000_000L * 20;
+        }
+        if (mode == 33) {
+            permittedTime = startTime + 1_000_000_000L * 15;
+        }
 
         if (mode == 1) {
             word = "letter";
         } else if (mode == 2) {
             word = "name/item?";
+        } else if (mode == 31 || mode == 32 || mode == 33) {
+            word = "letter";
         }
 
-        int maxRows = 0;
+        while (System.nanoTime() > permittedTime) {
+            int maxRows = 0;
 
-        if (numArray == 3) {
-            maxRows = 6;
-        }
-        else if (numArray == 4) {
-            maxRows = 12;
-        }
-
-        for (int i = 0; i < numRounds; i++) {
-            int firstCardRow = random.nextInt(maxRows);
-            int secondCardRow = random.nextInt(maxRows);
-
-            // Prevents cards from being the same value
-            if (firstCardRow == secondCardRow) {
-                firstCardRow += 1;
-            }
-            if (firstCardRow == maxRows) {
-                firstCardRow -= 1;
+            if (numArray == 3) {
+                maxRows = 6;
+            } else if (numArray == 4) {
+                maxRows = 12;
             }
 
-            // Picks card A at random
-            List<String> cardA = new ArrayList<>(Arrays.asList(set[firstCardRow]).subList(0, 4));
-            // Picks card B at random
-            List<String> cardB = new ArrayList<>(Arrays.asList(set[secondCardRow]).subList(0, 4));
+            for (int i = 0; i < numRounds; i++) {
+                int firstCardRow = random.nextInt(maxRows);
+                int secondCardRow = random.nextInt(maxRows);
 
-            // Shuffles Cards
-            Collections.shuffle(cardA);
-            Collections.shuffle(cardB);
-
-            // Prints Card A and Card B
-            for (String s : cardA) {
-                print(s, 1);
-            }
-            print("", 0);
-
-            for (String s : cardB) {
-                print(s, 1);
-            }
-            print("", 0);
-
-            // Gets the correct answer
-            cardB.retainAll(cardA);
-
-            print("What is the common " + word + "?", 0);
-            String guess = scanner.nextLine();
-
-            // Modifies the user input to be comparable to the arrayList
-            String guessMod = ("[" + guess + "]");
-
-            while (!guessMod.equalsIgnoreCase((String.valueOf(cardB)))) {
-                print("incorrect! Please guess again", 0);
-                guess = scanner.nextLine();
-                guessMod = ("[" + guess + "]");
-                if (guessMod.equalsIgnoreCase(String.valueOf(cardB))) {
-                    print("correct", 0);
-                    score += 1;
+                // Prevents cards from being the same value
+                if (firstCardRow == secondCardRow) {
+                    firstCardRow += 1;
                 }
-                if (guess.equalsIgnoreCase("quit")) {
-                    print("The correct answer was: ", 0);
-                    for (String item : cardB) {
-                        print(item, 0);
-                        return;
+                if (firstCardRow == maxRows) {
+                    firstCardRow -= 1;
+                }
+
+                // Picks card A at random
+                List<String> cardA = new ArrayList<>(Arrays.asList(set[firstCardRow]).subList(0, 4));
+                // Picks card B at random
+                List<String> cardB = new ArrayList<>(Arrays.asList(set[secondCardRow]).subList(0, 4));
+
+                // Shuffles Cards
+                Collections.shuffle(cardA);
+                Collections.shuffle(cardB);
+
+                // Prints Card A and Card B
+                for (String s : cardA) {
+                    print(s, 1);
+                }
+                print("", 0);
+
+                for (String s : cardB) {
+                    print(s, 1);
+                }
+                print("", 0);
+
+                // Gets the correct answer
+                cardB.retainAll(cardA);
+
+                print("What is the common " + word + "?", 0);
+                String guess = scanner.nextLine();
+
+                // Modifies the user input to be comparable to the arrayList
+                String guessMod = ("[" + guess + "]");
+
+                while (!guessMod.equalsIgnoreCase((String.valueOf(cardB)))) {
+                    print("incorrect! Please guess again", 0);
+                    guess = scanner.nextLine();
+                    guessMod = ("[" + guess + "]");
+                    if (guessMod.equalsIgnoreCase(String.valueOf(cardB))) {
+                        print("correct", 0);
+                        score += 1;
+                    }
+                    if (guess.equalsIgnoreCase("quit")) {
+                        print("The correct answer was: ", 0);
+                        for (String item : cardB) {
+                            print(item, 0);
+                            return;
+                        }
                     }
                 }
             }
+            return;
         }
     }
+
 
     public static void customValues() {
 
@@ -255,9 +282,9 @@ public class Main {
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "--------------------------------------------------" + RESET, 0);
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[1]  |"+ BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA +"                  Original                 " + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE +"|" + RESET, 0);
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[2]  | " + BRIGHT_BACKGROUND_BLACK + BLUE + "               Input-based                " + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "|" + RESET, 0);
-        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[3]  | " + BRIGHT_BACKGROUND_BLACK + BRIGHT_YELLOW + "            Restore last score        " + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "    |" + RESET, 0);
+        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[3]  | " + BRIGHT_BACKGROUND_BLACK + CYAN + "            Timed Game Variant        " + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "    |" + RESET, 0);
         //TODO figure out why this is broken
-        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[4]  | " + BRIGHT_BACKGROUND_BLACK + CYAN + "            Timed Game Variant        " + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "    |" + RESET, 0);
+        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[4]  | " + BRIGHT_BACKGROUND_BLACK + BRIGHT_YELLOW + "            Restore last score        " + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "    |" + RESET, 0);
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[5]  |       " + BRIGHT_BACKGROUND_RED + BLUE + "Quit (you don't want too ooooo)" + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "     |" + RESET, 0);
 
         int input;
@@ -283,28 +310,28 @@ public class Main {
     public static void standardGame() {
         score = 0;
 
-        long startTime = System.nanoTime();
-
         // Get value for number of rounds
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA + "Please enter the number of rounds you wish to play!", 0);
         int numRounds = scanner.nextInt();
 
         processValues(4, 1, numRounds, standardSet);
-
-        long elapsedTime = (System.nanoTime() - startTime)/1_000_000_000;
-        print(String.valueOf(elapsedTime), 0);
     }
 
     public static void timedGameVariant(int difficulty) {
+        long startTime = System.nanoTime();
         switch(difficulty){
             case 1:
-                processValues(4, 1, 3, standardSet);
+                processValues(4, 31, 3, standardSet);
+                long elapsedTime = (System.nanoTime() - startTime);
+                print(String.valueOf(elapsedTime), 0);
                 return;
             case 2:
-                processValues(4, 1, 5, standardSet);
+                processValues(4, 32, 5, standardSet);
+                elapsedTime = (System.nanoTime()-startTime);
+                print(String.valueOf(elapsedTime),0);
                 return;
             case 3:
-                processValues(4, 1, 10, standardSet);
+                processValues(4, 33, 10, standardSet);
                 break;
         }
     }
@@ -327,9 +354,6 @@ public class Main {
                     customValues();
                     break;
                 case 3:
-                    print("Your last score was: " + score, 0);
-                    break;
-                case 4:
                     print("  Please enter the difficulty :)  ", 0);
                     print("----------------------------------", 0);
                     print("A) Easy   B) Medium  C) Impossible", 0);
@@ -345,6 +369,10 @@ public class Main {
                         difficulty = 3;
                     }
                     timedGameVariant(difficulty);
+                    break;
+                case 4:
+                    print("Your last score was: " + score, 0);
+                    break;
                 case 5:
                     int max = goodbyeMessages.length;
                     int index = random.nextInt(max - 1);
