@@ -16,7 +16,6 @@ public class Main {
     // Regular text colors
     public static final String RESET = "\u001B[0m";
     public static final String BLUE = "\u001B[34m";
-    public static final String MAGENTA = "\u001B[35m";
 
     // Bright text colors
     public static final String BRIGHT_YELLOW = "\u001B[33;1m";
@@ -34,9 +33,6 @@ public class Main {
 
     static String[] goodbyeMessages = {"WOWWWWWW", "I see how it is.", "Okay...", "I hope both sides of your pillow are warm tonight.",
     "HOW COULD YOU DO THIS :(((", "Alright.", "I'll remember this...", "Check outside of your window 🙂"};
-
-    static int standardMaxRows = 12;
-    static int standardMin = 0;
 
     static String[][] standardSet = {
             {"a", "b", "c", "d"}, // Card One
@@ -87,6 +83,13 @@ public class Main {
         // Generates two random values for selecting the cards
 
         // TODO add exception statement things in the main body
+        String word = "";
+
+        if (mode == 1) {
+            word = "letter";
+        } else if (mode == 2) {
+            word = "name/item?";
+        }
 
         int maxRows = 0;
 
@@ -96,8 +99,6 @@ public class Main {
         else if (numArray == 4) {
             maxRows = 12;
         }
-
-        long startTime = System.nanoTime();
 
         for (int i = 0; i < numRounds; i++) {
             int firstCardRow = random.nextInt(maxRows);
@@ -134,7 +135,7 @@ public class Main {
             // Gets the correct answer
             cardB.retainAll(cardA);
 
-            print("What is the common letter?", 0);
+            print("What is the common " + word + "?", 0);
             String guess = scanner.nextLine();
 
             // Modifies the user input to be comparable to the arrayList
@@ -168,13 +169,13 @@ public class Main {
         String temp = scanner.nextLine();
         int numElementsPerCard = 0;
 
+        //TODO Fix this
         if (temp.equalsIgnoreCase("a")) {
             numElementsPerCard = 3;
         } else if (temp.equalsIgnoreCase("b")) {
             numElementsPerCard = 4;
         } else {
             print("Please put in a valid input!", 0);
-            temp = scanner.nextLine();
         }
 
         int numRounds = 0;
@@ -278,104 +279,34 @@ public class Main {
 
     public static void standardGame() {
         score = 0;
+
+        long startTime = System.nanoTime();
+
         // Get value for number of rounds
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA + "Please enter the number of rounds you wish to play!", 0);
         int numRounds = scanner.nextInt();
 
         processValues(4, 1, numRounds, standardSet);
-//        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA + "Please enter the number of rounds you wish to play!", 0);
-//        int numRounds = scanner.nextInt();
-//        long startTime = System.nanoTime();
-//
-//        for (int i = 0; i < numRounds; i++){
-//            int firstCardRow = random.nextInt(standardMaxRows - standardMin + 1) + standardMin;
-//            int secondCardRow = random.nextInt(standardMaxRows - standardMin + 1) + standardMin;
-//
-//            // Prevents cards from being the same value
-//            if (firstCardRow == secondCardRow) {
-//                firstCardRow += 1;
-//            }
-//            if (firstCardRow == 13) {
-//                firstCardRow -= 1;
-//            }
-//
-//            // Picks card A at random
-//            List<String> cardA = new ArrayList<>(Arrays.asList(standardSet[firstCardRow]).subList(0, 4));
-//            // Picks card B at random
-//            List<String> cardB = new ArrayList<>(Arrays.asList(standardSet[secondCardRow]).subList(0, 4));
-//
-//            // Shuffles Cards
-//            Collections.shuffle(cardA);
-//            Collections.shuffle(cardB);
-//
-//            // Prints Card A and Card B
-//            for (String s : cardA) {
-//                print(s, 1);
-//            }
-//            print("", 0);
-//
-//            for (String s : cardB) {
-//                print(s, 1);
-//            }
-//            print("", 0);
-//
-//            // Gets the correct answer
-//            cardB.retainAll(cardA);
-//
-//            print("What is the common letter?", 0);
-//            String guess = scanner.nextLine();
-//
-//            // Modifies the user input to be comparable to the arrayList
-//            String guessMod = ("[" + guess + "]");
-//
-//            while (!guessMod.equalsIgnoreCase((String.valueOf(cardB)))) {
-//                print("incorrect! Please guess again", 0);
-//                guess = scanner.nextLine();
-//                guessMod = ("[" + guess + "]");
-//                if (guessMod.equalsIgnoreCase(String.valueOf(cardB))) {
-//                    print("correct", 0);
-//                    score += 1;
-//                    }
-//            if (guess.equalsIgnoreCase("quit")) {
-//                print("The correct answer was: ", 0);
-//                for (String item : cardB) {
-//                    print(item, 0);
-//                return;
-//                }
-//            }
-//        }
-//
-//            }
-//            long estimatedTime = System.nanoTime() - startTime;
-//            print(String.valueOf(estimatedTime/1_000_000_000), 0);
-//            print("Do you wish to play again?", 0);
-//            print("--------------------------", 0);
-//            print("  A) " + GREEN + "Yes " + MAGENTA + "          B) " + RED + "No  " + RESET, 0);
-//            String replay = scanner.nextLine();
-//            if (replay.equalsIgnoreCase("A")) {
-//                standardGame();
-//            } else if (replay.equalsIgnoreCase("B")) {
-//                print("Okay!", 0);
-//            }
-//            else {
-//                print("Invalid input! Please select A or B", 0);
-//                replay = scanner.nextLine();
-//        }
+
+        long elapsedTime = (System.nanoTime() - startTime)/1_000_000_000;
+        print(String.valueOf(elapsedTime), 0);
     }
 
     public static void main(String[] args) throws InterruptedException {
         printMsgWithProgressBar("Generating the " + RED + "COOLEST " + RESET + "game of SpotIt!", 50, 60);
         print("", 0);
         print(GREEN + "Generation Complete. Welcome!" + RESET, 0);
-        Thread.sleep(500);
+        Thread.sleep(750);
         while (true) {
             int input = startMenu();
 
             switch (input) {
                 case 1:
+                    Thread.sleep(750);
                     standardGame();
                     break;
                 case 2:
+                    Thread.sleep(750);
                     customValues();
                     break;
                 case 3:
