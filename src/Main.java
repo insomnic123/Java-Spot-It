@@ -96,16 +96,16 @@ public class Main {
 
         long permittedTime = 0;
         if (mode == 1 || mode == 2) {
-            permittedTime = startTime + Long.MAX_VALUE;
+            permittedTime = Long.MAX_VALUE;
         }
         if (mode == 31) {
-            permittedTime = startTime + 1_000_000_000L *25;
+            permittedTime = 1_000_000_000L * 25;
         }
         if (mode == 32) {
-            permittedTime = startTime + 1_000_000_000L * 20;
+            permittedTime = 1_000_000_000L * 20;
         }
         if (mode == 33) {
-            permittedTime = startTime + 1_000_000_000L * 15;
+            permittedTime = 1_000_000_000L * 15;
         }
 
         if (mode == 1) {
@@ -116,7 +116,7 @@ public class Main {
             word = "letter";
         }
 
-        while (System.nanoTime() > permittedTime) {
+        while (System.nanoTime() - startTime < permittedTime) {
             int maxRows = 0;
 
             if (numArray == 3) {
@@ -319,10 +319,10 @@ public class Main {
 
     public static void timedGameVariant(int difficulty) {
         long startTime = System.nanoTime();
+        long elapsedTime = (System.nanoTime() - startTime);
         switch(difficulty){
             case 1:
                 processValues(4, 31, 3, standardSet);
-                long elapsedTime = (System.nanoTime() - startTime);
                 print(String.valueOf(elapsedTime), 0);
                 return;
             case 2:
@@ -346,11 +346,15 @@ public class Main {
 
             switch (input) {
                 case 1:
-                    Thread.sleep(750);
+                    printMsgWithProgressBar(GREEN + "Loading...", 25, 25);
+                    print("", 0);
+                    print(RESET + "Done!", 0);
                     standardGame();
                     break;
                 case 2:
-                    Thread.sleep(750);
+                    printMsgWithProgressBar(GREEN + "Loading...", 25, 25);
+                    print("", 0);
+                    print(GREEN + "Done!", 0);
                     customValues();
                     break;
                 case 3:
