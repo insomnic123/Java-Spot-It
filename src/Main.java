@@ -331,15 +331,18 @@ public class Main {
         switch(difficulty){
             case 1:
                 processValues(4, 31, 3, standardSet);
+                calculateScore(3, 31);
                 print(String.valueOf(elapsedTime), 0);
                 return;
             case 2:
                 processValues(4, 32, 5, standardSet);
+                calculateScore(5, 32);
                 elapsedTime = (System.nanoTime()-startTime);
                 print(String.valueOf(elapsedTime),0);
                 return;
             case 3:
                 processValues(4, 33, 10, standardSet);
+                calculateScore(10, 33);
                 break;
         }
     }
@@ -387,6 +390,7 @@ public class Main {
                         difficulty = 3;
                     }
                     timedGameVariant(difficulty);
+                    print(passFailMessage, 0);
                     break;
                 case 4:
                     if (score > 0) {
