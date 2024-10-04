@@ -253,6 +253,7 @@ public class Main {
 
             // Generates two random values for selecting the cards
             processValues(4, 2, numRounds, modifiedSet);
+
         } else if (numElementsPerCard == 3) {
             print(BRIGHT_BACKGROUND_BLACK + BRIGHT_BLUE + "Please input seven names/items you wish to include", 0);
             String a = scanner.nextLine();
@@ -316,13 +317,48 @@ public class Main {
         return (input);
     }
 
+    public static void replay(String input, int mode) {
+        input = input.toUpperCase();
+        switch (input) {
+            case ("R"):
+                if (mode == 1) {
+                    standardGame();
+                }
+                if (mode == 2) {
+                    customValues();
+                }
+                if (mode == 31 || mode == 32 || mode == 33) {
+                    timedGameVariant(mode);
+                }
+                break;
+            case "Q":
+                return;
+            default:
+                print("Invalid input! Please enter either Q or R!",0);
+                replay(scanner.nextLine(), mode);
+        }
+    }
+
     public static void standardGame() {
+
+        String replay = "";
 
         // Get value for number of rounds
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA + "Please enter the number of rounds you wish to play!", 0);
         int numRounds = scanner.nextInt();
 
         processValues(4, 1, numRounds, standardSet);
+
+        printMsgWithProgressBar(RED + "Calculating score...", 25, 25);
+        print("" + RESET, 0);
+        calculateScore(times.size(), 1);
+        print("Woah! Your score was: " + String.valueOf(score), 0);
+        print("Press 'R' to replay, or 'Q' to return to main menu!", 0);
+
+        replay = scanner.nextLine();
+        replay(replay, 1);
+        return;
+
     }
 
     public static void timedGameVariant(int difficulty) {
@@ -354,6 +390,7 @@ public class Main {
         Thread.sleep(750);
         while (true) {
             int input = startMenu();
+            String replay = "";
 
             switch (input) {
                 case 1:
@@ -361,9 +398,26 @@ public class Main {
                     print("", 0);
                     print(RESET + "Done!", 0);
                     standardGame();
-                    print(times.toString(), 0);
-                    calculateScore(times.size(), 1);
-                    print(String.valueOf(score), 0);
+//                    printMsgWithProgressBar(RED + "Calculating score...", 25, 25);
+//                    print("" + RESET, 0);
+//                    calculateScore(times.size(), 1);
+//                    print("Woah! Your score was: " + String.valueOf(score), 0);
+//                    print("Press 'R' to replay!", 0);
+//
+//                    while (true) {
+//                        try {
+//                            replay = scanner.nextLine();
+//                            while (!replay.equalsIgnoreCase("R")) {
+//                                print("That's an invalid input! Please enter R if you wish to replay.", 0);
+//                                replay = scanner.nextLine();
+//                            }
+//                            standardGame();
+//                            break;
+//                        } catch (InputMismatchException e) {
+//                            print("That's an invalid input! Please select a valid input", 0);
+//                            scanner.nextLine();
+//                        }
+//                    }
                     break;
                 case 2:
                     printMsgWithProgressBar(GREEN + "Loading...", 25, 25);
