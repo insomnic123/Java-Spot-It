@@ -65,7 +65,9 @@ public class Main {
 
     static int score;
 
-    public static void calculateScore(int rounds) {
+    static String passFailMessage = "";
+
+    public static void calculateScore(int rounds, int mode) {
         int sum = 0;
         for (Integer time : times) {
             sum += time;
@@ -73,7 +75,12 @@ public class Main {
 
         double averageTime = sum/ (double) rounds;
 
-        score = (int) ((100/(averageTime + 100))*1000);
+        if (mode == 31 || mode == 32 || mode == 33) {
+        passFailMessage = (mode == 31 && averageTime < 25.00) ? "You've failed :(" : "You won!";
+        passFailMessage = (mode == 32 && averageTime < 15.00) ? "You've failed :(" : "You won!";
+        passFailMessage = (mode == 33 && averageTime < 10.00) ? "You've failed :(" : "You won!";
+    }
+    score = (int) ((100/(averageTime + 100))*1000);
 
     }
 
@@ -352,7 +359,7 @@ public class Main {
                     print(RESET + "Done!", 0);
                     standardGame();
                     print(times.toString(), 0);
-                    calculateScore(times.size());
+                    calculateScore(times.size(), 1);
                     print(String.valueOf(score), 0);
                     break;
                 case 2:
@@ -361,7 +368,7 @@ public class Main {
                     print(GREEN + "Done!", 0);
                     customValues();
                     print(times.toString(), 0);
-                    calculateScore(times.size());
+                    calculateScore(times.size(), 2);
                     print(String.valueOf(score), 0);
                     break;
                 case 3:
