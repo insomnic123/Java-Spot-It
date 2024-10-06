@@ -93,11 +93,15 @@ public class Main {
 
         double averageTime = sum/(double) rounds;
 
-        if (mode == 31 || mode == 32 || mode == 33) {
-            passFailMessage = (mode == 31 && sum < 25.00) ? "You won!" : "You've failed :(";
-            passFailMessage = (mode == 32 && sum < 15.00) ? "You won!" : "You've failed :(";
-            passFailMessage = (mode == 33 && sum < 10.00) ? "You won!" : "You've failed :(";
-    }
+        if (mode == 31) {
+            passFailMessage = (mode == 31 && sum < 25.00) ? CYAN + "You won!" : CYAN + "You've failed :(";
+        }
+        else if (mode == 22) {
+            passFailMessage = (mode == 32 && sum < 15.00) ? CYAN + "You won!" : CYAN + "You've failed :(";
+        }
+        else if (mode == 33) {
+            passFailMessage = (mode == 33 && sum < 10.00) ? CYAN + "You won!" : CYAN + "You've failed :(";
+        }
     score = (int) ((100/(averageTime + 100))*1000);
 
     }
@@ -214,6 +218,7 @@ public class Main {
             }
             int elapsedTime = (int) ((System.nanoTime() - startTime)/1_000_000_000);
             times.add(elapsedTime);
+            startTime = System.nanoTime();
             }
         }
 
@@ -404,7 +409,7 @@ public class Main {
         else if (mode == 2) {
             color = BLUE;
         }
-        else if (mode == 31 || mode == 32 || mode == 33) {
+        else if (mode == 3) {
             color = CYAN;
         }
 
@@ -416,8 +421,8 @@ public class Main {
                 if (mode == 2) {
                     customValues();
                 }
-                if (mode == 31 || mode == 32 || mode == 33) {
-                    timedGameVariant(mode);
+                if (mode == 3) {
+                    timedGameVariant();
                 }
                 break;
             case "Q":
@@ -466,24 +471,50 @@ public class Main {
 
     }
 
-    public static void timedGameVariant(int difficulty) {
+    public static void timedGameVariant() throws InterruptedException {
         long startTime = System.nanoTime();
         long elapsedTime = (System.nanoTime() - startTime);
+        String replay = "";
+
+        print("  Please enter the difficulty :)  ", 0);
+        print("----------------------------------", 0);
+        print("A) Easy   B) Medium  C) Impossible", 0);
+        String temp = scanner.nextLine();
+        int difficulty = 0;
+        if (temp.equalsIgnoreCase("A")) {
+            difficulty = 1;
+        }
+        else if (temp.equalsIgnoreCase("B")) {
+            difficulty = 2;
+        }
+        else if (temp.equalsIgnoreCase("C")) {
+            difficulty = 3;
+        }
+
         switch(difficulty){
             case 1:
                 processValues(4, 31, 3, standardSet);
                 calculateScore(3, 31);
-                print(String.valueOf(elapsedTime), 0);
+                print(passFailMessage, 0);
+                print(BRIGHT_BACKGROUND_BLACK + CYAN + "Press 'R' to replay, or 'Q' to return to main menu!" + RESET, 0);
+                replay = scanner.nextLine();
+                replay(replay, 3);
                 return;
             case 2:
                 processValues(4, 32, 5, standardSet);
-                calculateScore(5, 32);
-                elapsedTime = (System.nanoTime()-startTime);
-                print(String.valueOf(elapsedTime),0);
+                calculateScore(5, 3);
+                print(passFailMessage, 0);
+                print(BRIGHT_BACKGROUND_BLACK + CYAN + "Press 'R' to replay, or 'Q' to return to main menu!" + RESET, 0);
+                replay = scanner.nextLine();
+                replay(replay, 3);
                 return;
             case 3:
-                processValues(4, 33, 1, standardSet);
+                processValues(4, 33, 10, standardSet);
                 calculateScore(10, 33);
+                print(passFailMessage, 0);
+                print(BRIGHT_BACKGROUND_BLACK + CYAN + "Press 'R' to replay, or 'Q' to return to main menu!" + RESET, 0);
+                replay = scanner.nextLine();
+                replay(replay, 3);
                 break;
         }
     }
@@ -514,22 +545,7 @@ public class Main {
                     print(String.valueOf(score), 0);
                     break;
                 case 3:
-                    print("  Please enter the difficulty :)  ", 0);
-                    print("----------------------------------", 0);
-                    print("A) Easy   B) Medium  C) Impossible", 0);
-                    String temp = scanner.nextLine();
-                    int difficulty = 0;
-                    if (temp.equalsIgnoreCase("A")) {
-                        difficulty = 1;
-                    }
-                    else if (temp.equalsIgnoreCase("B")) {
-                        difficulty = 2;
-                    }
-                    else if (temp.equalsIgnoreCase("C")) {
-                        difficulty = 3;
-                    }
-                    timedGameVariant(difficulty);
-                    print(passFailMessage, 0);
+                    timedGameVariant();
                     break;
                 case 4:
                     if (score > 0) {
