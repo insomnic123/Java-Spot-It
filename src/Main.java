@@ -40,8 +40,26 @@ public class Main {
 
     static Random random = new Random();
 
-    static String[] goodbyeMessages = {"WOWWWWWW", "I see how it is.", "Okay...", "I hope both sides of your pillow are warm tonight.",
-    "HOW COULD YOU DO THIS :(((", "Alright.", "I'll remember this...", "Check outside of your window 🙂"};
+    // Messages generated using ChatGPT
+    public static String[] goodbyeMessages = {
+            "Oh, leaving so soon? I guess winning isn't for everyone.",
+            "Fine, leave. I wasn’t having fun either.",
+            "I see you're running away from your problems... again.",
+            "Quitting already? You were *so* close... not really.",
+            "Leaving now? Don't worry, nobody noticed you were here.",
+            "Rage quitting, or just scared of a challenge?",
+            "Goodbye! I hope your next game goes as well as this one. (Hint: it won’t.)",
+            "Thanks for playing! Just kidding, you barely played at all.",
+            "Oh, you’re done? I guess I'll go cry now... or not.",
+            "So long! I bet you leave mid-conversation too.",
+            "Quitting now? Wow, commitment really isn’t your thing, is it?",
+            "Don’t worry, I’ll finish the game for you. Oh wait... I can't.",
+            "I’ll pretend you didn’t just quit... but we both know the truth.",
+            "Was it something I said? Or just your skill level?",
+            "Leaving already? I had more fun with the loading screen.",
+            "Wow, you either really suck, or you're just Prithviraj."
+    };
+
 
     static String[][] standardSet = {
             {"a", "b", "c", "d"}, // Card One
@@ -73,7 +91,7 @@ public class Main {
             sum += time;
         }
 
-        double averageTime = sum/ (double) rounds;
+        double averageTime = sum/(double) rounds;
 
         if (mode == 31 || mode == 32 || mode == 33) {
         passFailMessage = (mode == 31 && averageTime < 25.00) ? "You've failed :(" : "You won!";
@@ -205,6 +223,9 @@ public class Main {
         else if (mode == 2) {
             color = BLUE;
         }
+        else if (mode == 4) {
+            color = BRIGHT_YELLOW;
+        }
         else if (mode == 31 || mode == 32 || mode == 33) {
             color = CYAN;
         }
@@ -221,10 +242,26 @@ public class Main {
         }
     }
 
-    public static void customValues() {
-        print(BRIGHT_BACKGROUND_BLACK + BLUE + "Please input how many rounds you wish to play:" + RESET, 0);
+    public static void customValues() throws InterruptedException {
         int numRounds = 0;
-        numRounds = scanner.nextInt();
+        boolean validInput = false;
+
+        print(BRIGHT_BACKGROUND_BLACK + BLUE + "Please input how many rounds you wish to play:" + RESET, 0);
+        while (!validInput){
+            try{
+                numRounds = scanner.nextInt();
+                validInput = true;
+            } catch (InputMismatchException e) {
+                print(BRIGHT_BACKGROUND_BLACK + BLUE + "Invalid input! Please enter an integer number." + RESET, 0);
+                scanner.nextLine();
+            }
+        }
+
+        if (numRounds == 0) {
+            print(BRIGHT_BACKGROUND_BLACK + RED + "Boi wha da freak why did you even click on this then??" + RESET, 0);
+            Thread.sleep(500);
+            return;
+        }
 
         print(BRIGHT_BACKGROUND_BLACK + BLUE + "Please pick how many elements you want per card (A or B):" + RESET, 0);
         print(BRIGHT_BACKGROUND_BLACK + BLUE + "---------------------------------------------------------" + RESET, 0);
@@ -305,6 +342,14 @@ public class Main {
             // Generates two random values for selecting the cards
             processValues(3, 2, numRounds, modifiedSet);
         }
+        calculateScore(numRounds, 2);
+        print(BRIGHT_BACKGROUND_BLACK + BLUE + "Woah! Your score was: " + String.valueOf(score) + RESET, 0);
+        print(BRIGHT_BACKGROUND_BLACK + BLUE + "Press 'R' to replay, or 'Q' to return to main menu!" + RESET, 0);
+
+        String replay = "";
+
+        replay = scanner.nextLine();
+        replay(replay, 2);
     }
 
     public static void print(String msg, int type) {
@@ -345,7 +390,7 @@ public class Main {
         return (input);
     }
 
-    public static void replay(String input, int mode) {
+    public static void replay(String input, int mode) throws InterruptedException {
         input = input.toUpperCase();
         String color = "";
 
@@ -379,11 +424,29 @@ public class Main {
         }
     }
 
-    public static void standardGame() {
+    public static void standardGame() throws InterruptedException {
         String replay = "";
         // Get value for number of rounds
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA + "Please enter the number of rounds you wish to play!", 0);
-        int numRounds = scanner.nextInt();
+
+        int numRounds = 0;
+        boolean validInput = false;
+
+        while (!validInput){
+            try{
+                numRounds = scanner.nextInt();
+                validInput = true;
+            } catch (InputMismatchException e) {
+                print(BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA + "Invalid input! Please enter an integer number." + RESET, 0);
+                scanner.nextLine();
+            }
+        }
+
+        if (numRounds == 0) {
+            print(BRIGHT_BACKGROUND_BLACK + RED + "Boi wha da freak why did you even click on this then??" + RESET, 0);
+            Thread.sleep(500);
+            return;
+        }
 
         processValues(4, 1, numRounds, standardSet);
 
@@ -466,19 +529,25 @@ public class Main {
                     break;
                 case 4:
                     if (score > 0) {
-                        print("Your last score was: " + score, 0);
-                        print("Please press 'q' to return to the main menu!", 0);
+                        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_YELLOW + "Your last score was: " + score + RESET, 0);
+                        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_YELLOW + "Please press 'q' to return to the main menu!" + RESET, 0);
                     }
                     else {
-                        print("You haven't played yet!", 0);
-                        print("Please press 'q' to return to the main menu and get playing!", 0);
+                        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_YELLOW + "You haven't played yet!" + RESET, 0);
+                        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_YELLOW + "Please press 'q' to return to the main menu and get playing!" + RESET, 0);
                     }
                     String returnMain = scanner.nextLine();
-                    if (returnMain.equalsIgnoreCase("q")) {
+                    int validInput = validateInput(returnMain, "q", "Q", 4);
+
+                    while (validInput == 0) {
+                        returnMain = scanner.nextLine();
+                        validInput = validateInput(returnMain, "q", "Q", 4);
+                    }
+
+                    if (validInput == 1) {
                         printMsgWithProgressBar(RED + "Loading...", 25, 25);
                         print("", 0);
                         print(RED + "Done!", 0);
-                        break;
                     }
                     break;
                 case 5:
@@ -488,8 +557,6 @@ public class Main {
                     System.exit(0);
                     break;
             }
-
         }
-
     }
 }
