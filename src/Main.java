@@ -195,27 +195,55 @@ public class Main {
             }
         }
 
+    public static int validateInput(String input, String valueA, String valueB, int mode) {
+        input = input.toUpperCase();
+        String color = "";
 
+        if (mode == 1) {
+            color = BRIGHT_MAGENTA;
+        }
+        else if (mode == 2) {
+            color = BLUE;
+        }
+        else if (mode == 31 || mode == 32 || mode == 33) {
+            color = CYAN;
+        }
+
+        if (input.equalsIgnoreCase(valueA)) {
+            return(1);
+        }
+        else if (input.equalsIgnoreCase(valueB)) {
+            return(2);
+        }
+        else {
+            print(BRIGHT_BACKGROUND_BLACK + color + "Please input either " + valueA + " or " + valueB + "!" + RESET, 0);
+            return(0);
+        }
+    }
 
     public static void customValues() {
-        print("Please input how many rounds you wish to play:", 0);
+        print(BRIGHT_BACKGROUND_BLACK + BLUE + "Please input how many rounds you wish to play:" + RESET, 0);
         int numRounds = 0;
         numRounds = scanner.nextInt();
 
-        print("Please pick how many elements you want per card (A or B):", 0);
-        print("---------------------------------------------------------", 0);
-        print("      A)     3                             B)     4      ", 0);
+        print(BRIGHT_BACKGROUND_BLACK + BLUE + "Please pick how many elements you want per card (A or B):" + RESET, 0);
+        print(BRIGHT_BACKGROUND_BLACK + BLUE + "---------------------------------------------------------" + RESET, 0);
+        print(BRIGHT_BACKGROUND_BLACK + BLUE + "      A)     3                             B)     4      " + RESET, 0);
         scanner.nextLine();
         String temp = scanner.nextLine();
         int numElementsPerCard = 0;
 
-        //TODO Fix this
-        if (temp.equalsIgnoreCase("a")) {
+        int validatingInput = validateInput(temp, "A","B", 2);
+
+        while (validatingInput == 0) {
+            temp = scanner.nextLine();
+            validatingInput = validateInput(temp, "A", "B", 2);
+        }
+        if (validatingInput == 1) {
             numElementsPerCard = 3;
-        } else if (temp.equalsIgnoreCase("b")) {
+        }
+        else if (validatingInput == 2) {
             numElementsPerCard = 4;
-        } else {
-            print("Please put in a valid input!", 0);
         }
 
         if (numElementsPerCard == 4) {
@@ -305,12 +333,12 @@ public class Main {
                 input = scanner.nextInt();
                 scanner.nextLine();
                 while (input < 1 || input > 5) {
-                    print("That's an invalid input! Please put an integer between 1 and 4", 0);
+                    print("That's an invalid input! Please put an integer between 1 and 5", 0);
                     input = scanner.nextInt();
                 }
                 break;
             } catch (InputMismatchException e) {
-                print("That's an invalid input! Please put an integer between 1 and 4", 0);
+                print("That's an invalid input! Please put an integer between 1 and 5", 0);
                 scanner.nextLine();
             }
         }
@@ -319,6 +347,18 @@ public class Main {
 
     public static void replay(String input, int mode) {
         input = input.toUpperCase();
+        String color = "";
+
+        if (mode == 1) {
+            color = BRIGHT_MAGENTA;
+        }
+        else if (mode == 2) {
+            color = BLUE;
+        }
+        else if (mode == 31 || mode == 32 || mode == 33) {
+            color = CYAN;
+        }
+
         switch (input) {
             case ("R"):
                 if (mode == 1) {
@@ -334,15 +374,13 @@ public class Main {
             case "Q":
                 return;
             default:
-                print("Invalid input! Please enter either Q or R!",0);
+                print(BRIGHT_BACKGROUND_BLACK + color + "Invalid input! Please enter either Q or R!" + RESET,0);
                 replay(scanner.nextLine(), mode);
         }
     }
 
     public static void standardGame() {
-
         String replay = "";
-
         // Get value for number of rounds
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA + "Please enter the number of rounds you wish to play!", 0);
         int numRounds = scanner.nextInt();
@@ -352,8 +390,8 @@ public class Main {
         printMsgWithProgressBar(RED + "Calculating score...", 25, 25);
         print("" + RESET, 0);
         calculateScore(times.size(), 1);
-        print("Woah! Your score was: " + String.valueOf(score), 0);
-        print("Press 'R' to replay, or 'Q' to return to main menu!", 0);
+        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA + "Woah! Your score was: " + String.valueOf(score) + RESET, 0);
+        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA + "Press 'R' to replay, or 'Q' to return to main menu!" + RESET, 0);
 
         replay = scanner.nextLine();
         replay(replay, 1);
@@ -398,31 +436,11 @@ public class Main {
                     print("", 0);
                     print(RESET + "Done!", 0);
                     standardGame();
-//                    printMsgWithProgressBar(RED + "Calculating score...", 25, 25);
-//                    print("" + RESET, 0);
-//                    calculateScore(times.size(), 1);
-//                    print("Woah! Your score was: " + String.valueOf(score), 0);
-//                    print("Press 'R' to replay!", 0);
-//
-//                    while (true) {
-//                        try {
-//                            replay = scanner.nextLine();
-//                            while (!replay.equalsIgnoreCase("R")) {
-//                                print("That's an invalid input! Please enter R if you wish to replay.", 0);
-//                                replay = scanner.nextLine();
-//                            }
-//                            standardGame();
-//                            break;
-//                        } catch (InputMismatchException e) {
-//                            print("That's an invalid input! Please select a valid input", 0);
-//                            scanner.nextLine();
-//                        }
-//                    }
                     break;
                 case 2:
                     printMsgWithProgressBar(GREEN + "Loading...", 25, 25);
                     print("", 0);
-                    print(GREEN + "Done!", 0);
+                    print(GREEN + "Done!" + RESET, 0);
                     customValues();
                     print(times.toString(), 0);
                     calculateScore(times.size(), 2);
