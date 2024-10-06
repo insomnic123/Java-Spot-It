@@ -130,7 +130,7 @@ public class Main {
     public static void processValues(int numArray, int mode, int numRounds, String[][] set) {
         score = 0;
         times.clear();
-
+        String color = "";
         // Generates two random values for selecting the cards
         long startTime = System.nanoTime();
         // TODO add exception statement things in the main body
@@ -138,10 +138,13 @@ public class Main {
 
         if (mode == 1) {
             word = "letter";
+            color = BRIGHT_MAGENTA;
         } else if (mode == 2) {
             word = "name/item?";
+            color = BLUE;
         } else if (mode == 31 || mode == 32 || mode == 33) {
             word = "letter";
+            color = CYAN;
         }
 
         int maxRows = 0;
@@ -175,37 +178,52 @@ public class Main {
 
             // Prints Card A and Card B
             for (String s : cardA) {
-                print(s, 1);
+                print(BRIGHT_BACKGROUND_BLACK + color + s + " " + RESET, 1);
             }
             print("", 0);
 
             for (String s : cardB) {
-                print(s, 1);
+                print(BRIGHT_BACKGROUND_BLACK + color + s + " " + RESET, 1);
             }
             print("", 0);
 
             // Gets the correct answer
             cardB.retainAll(cardA);
 
-            print("What is the common " + word + "?", 0);
+            print(BRIGHT_BACKGROUND_BLACK + color + "What is the common " + word + "?" + RESET, 0);
             String guess = scanner.nextLine();
 
             // Modifies the user input to be comparable to the arrayList
             String guessMod = ("[" + guess + "]");
 
-            if (!guessMod.equalsIgnoreCase((String.valueOf(cardB)))) {
-                print("incorrect! Please guess again", 0);
-                guess = scanner.nextLine();
-                guessMod = ("[" + guess + "]");
-            }
-            else if (guessMod.equalsIgnoreCase(String.valueOf(cardB))) {
-                print("correct", 0);
-                }
-            else if (guess.equalsIgnoreCase("quit")) {
-                print("The correct answer was: ", 0);
-                for (String item : cardB) {
-                    print(item, 0);
-                    return;
+//            if (!guessMod.equalsIgnoreCase((String.valueOf(cardB)))) {
+//                print(BRIGHT_BACKGROUND_BLACK + color + "incorrect! Please guess again" + RESET, 0);
+//                guess = scanner.nextLine();
+//            }
+//            else if (guessMod.equalsIgnoreCase(String.valueOf(cardB))) {
+//                print(BRIGHT_BACKGROUND_BLACK + color + "correct" + RESET, 0);
+//                }
+//            else if (guess.equalsIgnoreCase("quit")) {
+//                print(BRIGHT_BACKGROUND_BLACK + color + "The correct answer was: ", 0);
+//                for (String item : cardB) {
+//                    print(item + RESET, 0);
+//                    return;
+//                }
+//            }
+            while (true) {  // Infinite loop until the correct guess or quit
+                if (guess.equalsIgnoreCase("quit")) {
+                    print(BRIGHT_BACKGROUND_BLACK + color + "The correct answer was: ", 0);
+                    for (String item : cardB) {
+                        print(item + RESET, 0);
+                    }
+                    return; // Exit the method to return to the main function
+                } else if (guessMod.equalsIgnoreCase(String.valueOf(cardB))) {
+                    print(BRIGHT_BACKGROUND_BLACK + color + "correct" + RESET, 0);
+                    break; // Exit the loop if the guess is correct
+                } else {
+                    print(BRIGHT_BACKGROUND_BLACK + color + "incorrect! Please guess again" + RESET, 0);
+                    guess = scanner.nextLine(); // Prompt the user for another guess
+                    guessMod = ("[" + guess + "]"); // Assuming guessMod modifies the input
                 }
             }
             int elapsedTime = (int) ((System.nanoTime() - startTime)/1_000_000_000);
