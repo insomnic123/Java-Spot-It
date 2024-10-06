@@ -94,9 +94,9 @@ public class Main {
         double averageTime = sum/(double) rounds;
 
         if (mode == 31 || mode == 32 || mode == 33) {
-        passFailMessage = (mode == 31 && averageTime < 25.00) ? "You've failed :(" : "You won!";
-        passFailMessage = (mode == 32 && averageTime < 15.00) ? "You've failed :(" : "You won!";
-        passFailMessage = (mode == 33 && averageTime < 10.00) ? "You've failed :(" : "You won!";
+            passFailMessage = (mode == 31 && sum < 25.00) ? "You won!" : "You've failed :(";
+            passFailMessage = (mode == 32 && sum < 15.00) ? "You won!" : "You've failed :(";
+            passFailMessage = (mode == 33 && sum < 10.00) ? "You won!" : "You've failed :(";
     }
     score = (int) ((100/(averageTime + 100))*1000);
 
@@ -196,20 +196,6 @@ public class Main {
             // Modifies the user input to be comparable to the arrayList
             String guessMod = ("[" + guess + "]");
 
-//            if (!guessMod.equalsIgnoreCase((String.valueOf(cardB)))) {
-//                print(BRIGHT_BACKGROUND_BLACK + color + "incorrect! Please guess again" + RESET, 0);
-//                guess = scanner.nextLine();
-//            }
-//            else if (guessMod.equalsIgnoreCase(String.valueOf(cardB))) {
-//                print(BRIGHT_BACKGROUND_BLACK + color + "correct" + RESET, 0);
-//                }
-//            else if (guess.equalsIgnoreCase("quit")) {
-//                print(BRIGHT_BACKGROUND_BLACK + color + "The correct answer was: ", 0);
-//                for (String item : cardB) {
-//                    print(item + RESET, 0);
-//                    return;
-//                }
-//            }
             while (true) {  // Infinite loop until the correct guess or quit
                 if (guess.equalsIgnoreCase("quit")) {
                     print(BRIGHT_BACKGROUND_BLACK + color + "The correct answer was: ", 0);
@@ -496,7 +482,7 @@ public class Main {
                 print(String.valueOf(elapsedTime),0);
                 return;
             case 3:
-                processValues(4, 33, 10, standardSet);
+                processValues(4, 33, 1, standardSet);
                 calculateScore(10, 33);
                 break;
         }
