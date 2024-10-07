@@ -284,6 +284,10 @@ public class Main {
         while (!validInput){
             try{
                 numRounds = scanner.nextInt();
+                while (numRounds < 0) {
+                    print(BRIGHT_BACKGROUND_BLACK + BLUE + "Invalid input! Please enter an integer number." + RESET, 0);
+                    numRounds = scanner.nextInt();
+                }
                 validInput = true;
             } catch (InputMismatchException e) {
                 print(BRIGHT_BACKGROUND_BLACK + BLUE + "Invalid input! Please enter an integer number." + RESET, 0);
@@ -484,7 +488,10 @@ public class Main {
         while (!validInput){
             try{
                 numRounds = scanner.nextInt();
-                scanner.nextLine();
+                while (numRounds < 0) {
+                    print(BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA + "Invalid input! Please enter an integer number." + RESET, 0);
+                    numRounds = scanner.nextInt();
+                }
                 validInput = true;
             } catch (InputMismatchException e) {
                 print(BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA + "Invalid input! Please enter an integer number." + RESET, 0);
