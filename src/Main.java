@@ -412,7 +412,7 @@ public class Main {
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[2]  | " + BRIGHT_BACKGROUND_BLACK + BLUE + "              Input-based                 " + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "|" + RESET, 0);
         print(BRIGHT_WHITE + "[3]  | " + CYAN + "           Timed Game Variant         " + BRIGHT_WHITE + "    |" + RESET, 0);
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[4]  | " + BRIGHT_BACKGROUND_BLACK + BRIGHT_YELLOW + "           Restore last score         " + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "    |" + RESET, 0);
-        print(BRIGHT_WHITE + "[5]  |      " + BRIGHT_BACKGROUND_RED + BLUE + "Quit (you don't want too ooooo)" + BRIGHT_WHITE + "      |" + RESET, 0);
+        print(BRIGHT_WHITE + "[5]  |      " + BRIGHT_BACKGROUND_RED + BLUE + "Quit (you don't want too ooooo)" + RESET + "      |", 0);
 
         int input;
 
@@ -484,6 +484,7 @@ public class Main {
         while (!validInput){
             try{
                 numRounds = scanner.nextInt();
+                scanner.nextLine();
                 validInput = true;
             } catch (InputMismatchException e) {
                 print(BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA + "Invalid input! Please enter an integer number." + RESET, 0);
