@@ -325,7 +325,7 @@ public class Main {
 
         // Gets appropriate values if 4 images per card is chosen
         if (numElementsPerCard == 4) {
-            print(BRIGHT_BACKGROUND_BLACK + BRIGHT_BLUE + "Please input thirteen names/items you wish to include", 0);
+            print(BRIGHT_BACKGROUND_BLACK + BRIGHT_BLUE + "Please input thirteen names/items you wish to include (press enter after every option)", 0);
             String a = scanner.nextLine();
             String b = scanner.nextLine();
             String c = scanner.nextLine();
@@ -362,7 +362,7 @@ public class Main {
 
             // Gets appropriate values if 3 images per card is chosen
         } else if (numElementsPerCard == 3) {
-            print(BRIGHT_BACKGROUND_BLACK + BRIGHT_BLUE + "Please input seven names/items you wish to include", 0);
+            print(BRIGHT_BACKGROUND_BLACK + BRIGHT_BLUE + "Please input seven names/items you wish to include (press enter after every option)", 0);
             String a = scanner.nextLine();
             String b = scanner.nextLine();
             String c = scanner.nextLine();
