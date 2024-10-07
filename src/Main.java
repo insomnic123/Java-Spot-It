@@ -7,14 +7,6 @@ Last Edit Date: INSERT TIME
 Ethics Declaration: “This code is my own work”
 */
 
-/* TODO Overall
-Current errors
-- Quit doesn't work in the first instance
-- Input mismatch errors should be fixed therough the use of loops
-- Asthetics not popping off
-
- */
-
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -60,7 +52,7 @@ public class Main {
             "Wow, you either really suck, or you're just Prithviraj."
     };
 
-
+    // Standard Set of Cards as required by the Assignment
     static String[][] standardSet = {
             {"a", "b", "c", "d"}, // Card One
             {"a", "e", "f", "g"}, // Card Two
@@ -79,13 +71,17 @@ public class Main {
 
     static Scanner scanner = new Scanner(System.in);
 
+    // Arraylist to store times
     static List<Integer> times = new ArrayList<>();
 
     static int score;
 
+    // For game mode #3 - to store the pass/fail messages
     static String passFailMessage = "";
 
+    // Method to calculate score & Output
     public static void calculateScore(int rounds, int mode) {
+        // Takes sum of the times and finds the average time
         int sum = 0;
         for (Integer time : times) {
             sum += time;
@@ -93,17 +89,24 @@ public class Main {
 
         double averageTime = sum/(double) rounds;
 
+        // Sets a message for game mode #3
         if (mode == 31) {
-            passFailMessage = (mode == 31 && sum < 25.00) ? CYAN + "You won!" : CYAN + "You've failed :(";
+            passFailMessage = sum < 25.00 ? CYAN + "You won!" : CYAN + "You've failed :(";
         }
-        else if (mode == 22) {
-            passFailMessage = (mode == 32 && sum < 15.00) ? CYAN + "You won!" : CYAN + "You've failed :(";
+        else if (mode == 32) {
+            passFailMessage = sum < 15.00 ? CYAN + "You won!" : CYAN + "You've failed :(";
         }
         else if (mode == 33) {
-            passFailMessage = (mode == 33 && sum < 10.00) ? CYAN + "You won!" : CYAN + "You've failed :(";
+            passFailMessage = sum < 10.00 ? CYAN + "You won!" : CYAN + "You've failed :(";
         }
-    score = (int) ((100/(averageTime + 100))*1000);
 
+        // Calculates score
+        score = (int) ((100/(averageTime + 100))*1000);
+
+        // Ensures that if the user quits the score is saved as 0 instead of 1000 during game mode 3
+        if (mode == 31 || mode == 32 || mode == 33 && score == 1000) {
+            score = 0;
+        }
     }
 
     // I found this really cool thing here https://medium.com/javarevisited/how-to-display-progressbar-on-the-standard-console-using-java-18f01d52b30e
@@ -131,15 +134,21 @@ public class Main {
         }
     }
 
+    // Processes the values for the various game modes
     public static void processValues(int numArray, int mode, int numRounds, String[][] set) {
+        // Resets values
         score = 0;
         times.clear();
         String color = "";
-        // Generates two random values for selecting the cards
-        long startTime = System.nanoTime();
-        // TODO add exception statement things in the main body
-        String word = "";
 
+        // Sets up start time
+        long startTime = System.nanoTime();
+
+        // Declaring variables
+        String word = "";
+        int maxRows = 0;
+
+        // Ensures the correct word is used depending on the game mode
         if (mode == 1) {
             word = "letter";
             color = BRIGHT_MAGENTA;
@@ -151,14 +160,14 @@ public class Main {
             color = CYAN;
         }
 
-        int maxRows = 0;
-
+        // Sets the bounds of the card generation depending on the number of images per card
         if (numArray == 3) {
             maxRows = 6;
         } else if (numArray == 4) {
             maxRows = 12;
         }
 
+        // Selects two cards at random based on their row
         for (int i = 0; i < numRounds; i++) {
             int firstCardRow = random.nextInt(maxRows);
             int secondCardRow = random.nextInt(maxRows);
@@ -197,44 +206,54 @@ public class Main {
             print(BRIGHT_BACKGROUND_BLACK + color + "What is the common " + word + "?" + RESET, 0);
             String guess = scanner.nextLine();
 
-            // Modifies the user input to be comparable to the arrayList
+            // Modifies the user input to be compatible with the arrayList
             String guessMod = ("[" + guess + "]");
 
             while (true) {  // Infinite loop until the correct guess or quit
+
                 if (guess.equalsIgnoreCase("quit")) {
                     print(BRIGHT_BACKGROUND_BLACK + color + "The correct answer was: ", 0);
                     for (String item : cardB) {
                         print(item + RESET, 0);
                     }
-                    return; // Exit the method to return to the main function
+                    return;
+
                 } else if (guessMod.equalsIgnoreCase(String.valueOf(cardB))) {
                     print(BRIGHT_BACKGROUND_BLACK + color + "correct" + RESET, 0);
-                    break; // Exit the loop if the guess is correct
+                    break;
+
                 } else {
                     print(BRIGHT_BACKGROUND_BLACK + color + "incorrect! Please guess again" + RESET, 0);
-                    guess = scanner.nextLine(); // Prompt the user for another guess
-                    guessMod = ("[" + guess + "]"); // Assuming guessMod modifies the input
+                    guess = scanner.nextLine();
+                    guessMod = ("[" + guess + "]");
                 }
             }
+            // Adds the elapsed time to the arraylist & resets the clock for the next round
             int elapsedTime = (int) ((System.nanoTime() - startTime)/1_000_000_000);
             times.add(elapsedTime);
             startTime = System.nanoTime();
             }
         }
 
+    // A function to validate inputs and loop if a given input is incorrect
+    // Returns 1 for option A, 2 for option B, 0 for an incorrect input
     public static int validateInput(String input, String valueA, String valueB, int mode) {
         input = input.toUpperCase();
         String color = "";
 
+        // Sets the colours depending on the game mode
         if (mode == 1) {
             color = BRIGHT_MAGENTA;
         }
+
         else if (mode == 2) {
             color = BLUE;
         }
+
         else if (mode == 4) {
             color = BRIGHT_YELLOW;
         }
+
         else if (mode == 31 || mode == 32 || mode == 33) {
             color = CYAN;
         }
@@ -242,19 +261,25 @@ public class Main {
         if (input.equalsIgnoreCase(valueA)) {
             return(1);
         }
+
         else if (input.equalsIgnoreCase(valueB)) {
             return(2);
         }
+
         else {
             print(BRIGHT_BACKGROUND_BLACK + color + "Please input either " + valueA + " or " + valueB + "!" + RESET, 0);
             return(0);
         }
     }
 
+    // The custom values game mode allows individuals to input their own values for a game with either 3 or 4 cards,
+    // depending to whatever they choose to input
     public static void customValues() throws InterruptedException {
+        // Initializing variables
         int numRounds = 0;
         boolean validInput = false;
 
+        // Prevents input mismatch error
         print(BRIGHT_BACKGROUND_BLACK + BLUE + "Please input how many rounds you wish to play:" + RESET, 0);
         while (!validInput){
             try{
@@ -266,12 +291,14 @@ public class Main {
             }
         }
 
+        // Ensures the user chooses to play more than one round
         if (numRounds == 0) {
             print(BRIGHT_BACKGROUND_BLACK + RED + "Boi wha da freak why did you even click on this then??" + RESET, 0);
             Thread.sleep(500);
             return;
         }
 
+        // Menu Screen !!
         print(BRIGHT_BACKGROUND_BLACK + BLUE + "Please pick how many elements you want per card (A or B):" + RESET, 0);
         print(BRIGHT_BACKGROUND_BLACK + BLUE + "---------------------------------------------------------" + RESET, 0);
         print(BRIGHT_BACKGROUND_BLACK + BLUE + "      A)     3                             B)     4      " + RESET, 0);
@@ -279,21 +306,25 @@ public class Main {
         String temp = scanner.nextLine();
         int numElementsPerCard = 0;
 
+        // Checks to see if the user inputted either a or b
         int validatingInput = validateInput(temp, "A","B", 2);
 
         while (validatingInput == 0) {
             temp = scanner.nextLine();
             validatingInput = validateInput(temp, "A", "B", 2);
         }
+
+        // Sets the number of elements depending on the user's input
         if (validatingInput == 1) {
             numElementsPerCard = 3;
         }
+
         else if (validatingInput == 2) {
             numElementsPerCard = 4;
         }
 
+        // Gets appropriate values if 4 images per card is chosen
         if (numElementsPerCard == 4) {
-
             print(BRIGHT_BACKGROUND_BLACK + BRIGHT_BLUE + "Please input thirteen names/items you wish to include", 0);
             String a = scanner.nextLine();
             String b = scanner.nextLine();
@@ -309,6 +340,7 @@ public class Main {
             String l = scanner.nextLine();
             String m = scanner.nextLine();
 
+            // Uses the same processing method as game A except the letters are redefined based on the input
             String[][] modifiedSet = {
                     {a, b, c, d}, // Card One
                     {a, e, f, g}, // Card Two
@@ -325,9 +357,10 @@ public class Main {
                     {d, g, h, l} // Card Thirteen
             };
 
-            // Generates two random values for selecting the cards
+            // Processes the values
             processValues(4, 2, numRounds, modifiedSet);
 
+            // Gets appropriate values if 3 images per card is chosen
         } else if (numElementsPerCard == 3) {
             print(BRIGHT_BACKGROUND_BLACK + BRIGHT_BLUE + "Please input seven names/items you wish to include", 0);
             String a = scanner.nextLine();
@@ -338,6 +371,7 @@ public class Main {
             String f = scanner.nextLine();
             String g = scanner.nextLine();
 
+            // Same idea as the 4 images per card but w/ three
             String[][] modifiedSet = {
                     {a, b, c},
                     {a, d, e},
@@ -352,32 +386,33 @@ public class Main {
             processValues(3, 2, numRounds, modifiedSet);
         }
         calculateScore(numRounds, 2);
-        print(BRIGHT_BACKGROUND_BLACK + BLUE + "Woah! Your score was: " + String.valueOf(score) + RESET, 0);
+        print(BRIGHT_BACKGROUND_BLACK + BLUE + "Woah! Your score was: " + score + RESET, 0);
         print(BRIGHT_BACKGROUND_BLACK + BLUE + "Press 'R' to replay, or 'Q' to return to main menu!" + RESET, 0);
 
-        String replay = "";
+        String replay;
 
         replay = scanner.nextLine();
         replay(replay, 2);
     }
 
+    // This is my magnum opus -- this whole project honestly pales in comparison to this amazing creation
     public static void print(String msg, int type) {
         if (type == 0) {
             System.out.println(msg);
         } else {
             System.out.print(msg);
         }
-    } // for fun hehe
+    }
 
+// The Start Menu
     public static int startMenu() {
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "Please select an option from one of the following:" + RESET, 0);
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "--------------------------------------------------" + RESET, 0);
-        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[1]  |"+ BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA +"                 Original                  " + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE +"|" + RESET, 0);
+        print(BRIGHT_WHITE + "[1]  |"+ BRIGHT_MAGENTA +"                 Original                  " + BRIGHT_WHITE +"|" + RESET, 0);
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[2]  | " + BRIGHT_BACKGROUND_BLACK + BLUE + "              Input-based                 " + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "|" + RESET, 0);
-        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[3]  | " + BRIGHT_BACKGROUND_BLACK + CYAN + "           Timed Game Variant         " + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "    |" + RESET, 0);
-        //TODO figure out why this is broken
+        print(BRIGHT_WHITE + "[3]  | " + CYAN + "           Timed Game Variant         " + BRIGHT_WHITE + "    |" + RESET, 0);
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[4]  | " + BRIGHT_BACKGROUND_BLACK + BRIGHT_YELLOW + "           Restore last score         " + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "    |" + RESET, 0);
-        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "[5]  |      " + BRIGHT_BACKGROUND_RED + BLUE + "Quit (you don't want too ooooo)" + BRIGHT_BACKGROUND_BLACK + BRIGHT_WHITE + "      |" + RESET, 0);
+        print(BRIGHT_WHITE + "[5]  |      " + BRIGHT_BACKGROUND_RED + BLUE + "Quit (you don't want too ooooo)" + BRIGHT_WHITE + "      |" + RESET, 0);
 
         int input;
 
@@ -391,6 +426,7 @@ public class Main {
                     input = scanner.nextInt();
                 }
                 break;
+
             } catch (InputMismatchException e) {
                 print("That's an invalid input! Please put an integer between 1 and 5", 0);
                 scanner.nextLine();
@@ -399,6 +435,7 @@ public class Main {
         return (input);
     }
 
+    // Sets up replay -- Similar to the validateInput method
     public static void replay(String input, int mode) throws InterruptedException {
         input = input.toUpperCase();
         String color = "";
@@ -413,6 +450,7 @@ public class Main {
             color = CYAN;
         }
 
+        // Calls the correct function depending on the game mode
         switch (input) {
             case ("R"):
                 if (mode == 1) {
@@ -425,8 +463,10 @@ public class Main {
                     timedGameVariant();
                 }
                 break;
+
             case "Q":
                 return;
+
             default:
                 print(BRIGHT_BACKGROUND_BLACK + color + "Invalid input! Please enter either Q or R!" + RESET,0);
                 replay(scanner.nextLine(), mode);
@@ -434,10 +474,10 @@ public class Main {
     }
 
     public static void standardGame() throws InterruptedException {
-        String replay = "";
+        String replay;
+
         // Get value for number of rounds
         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA + "Please enter the number of rounds you wish to play!", 0);
-
         int numRounds = 0;
         boolean validInput = false;
 
@@ -459,27 +499,28 @@ public class Main {
 
         processValues(4, 1, numRounds, standardSet);
 
+        // 'Calculates' Score with a display
         printMsgWithProgressBar(RED + "Calculating score...", 25, 25);
-        print("" + RESET, 0);
+        print(" " + RESET, 0);
         calculateScore(times.size(), 1);
-        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA + "Woah! Your score was: " + String.valueOf(score) + RESET, 0);
-        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA + "Press 'R' to replay, or 'Q' to return to main menu!" + RESET, 0);
+        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA + "Woah! Your score was: " + score + RESET, 0);
 
+        print(BRIGHT_BACKGROUND_BLACK + BRIGHT_MAGENTA + "Press 'R' to replay, or 'Q' to return to main menu!" + RESET, 0);
+        // Asks the user about replaying
         replay = scanner.nextLine();
         replay(replay, 1);
-        return;
-
     }
 
+    // Timed Game Variant !!
     public static void timedGameVariant() throws InterruptedException {
-        long startTime = System.nanoTime();
-        long elapsedTime = (System.nanoTime() - startTime);
-        String replay = "";
+        String replay;
 
-        print("  Please enter the difficulty :)  ", 0);
-        print("----------------------------------", 0);
-        print("A) Easy   B) Medium  C) Impossible", 0);
+        print(CYAN + "  Please enter the difficulty :)  ", 0);
+        print(CYAN + "----------------------------------", 0);
+        print(CYAN + "A) Easy   B) Medium  C) Impossible", 0);
         String temp = scanner.nextLine();
+
+        // Sets difficulty in accordance with the temporary variable
         int difficulty = 0;
         if (temp.equalsIgnoreCase("A")) {
             difficulty = 1;
@@ -502,7 +543,7 @@ public class Main {
                 return;
             case 2:
                 processValues(4, 32, 5, standardSet);
-                calculateScore(5, 3);
+                calculateScore(5, 32);
                 print(passFailMessage, 0);
                 print(BRIGHT_BACKGROUND_BLACK + CYAN + "Press 'R' to replay, or 'Q' to return to main menu!" + RESET, 0);
                 replay = scanner.nextLine();
@@ -520,13 +561,17 @@ public class Main {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        // Shows fake loading screen
         printMsgWithProgressBar("Generating the " + RED + "COOLEST " + RESET + "game of SpotIt!", 50, 60);
         print("", 0);
         print(GREEN + "Generation Complete. Welcome!" + RESET, 0);
+
+        // Creates pseudo delay
         Thread.sleep(750);
+
+        // Uses start menu and calls neccesary methods depending on the input
         while (true) {
             int input = startMenu();
-            String replay = "";
 
             switch (input) {
                 case 1:
@@ -535,6 +580,7 @@ public class Main {
                     print(RESET + "Done!", 0);
                     standardGame();
                     break;
+
                 case 2:
                     printMsgWithProgressBar(GREEN + "Loading...", 25, 25);
                     print("", 0);
@@ -544,18 +590,22 @@ public class Main {
                     calculateScore(times.size(), 2);
                     print(String.valueOf(score), 0);
                     break;
+
                 case 3:
                     timedGameVariant();
                     break;
+
                 case 4:
                     if (score > 0) {
                         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_YELLOW + "Your last score was: " + score + RESET, 0);
                         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_YELLOW + "Please press 'q' to return to the main menu!" + RESET, 0);
                     }
+
                     else {
                         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_YELLOW + "You haven't played yet!" + RESET, 0);
                         print(BRIGHT_BACKGROUND_BLACK + BRIGHT_YELLOW + "Please press 'q' to return to the main menu and get playing!" + RESET, 0);
                     }
+
                     String returnMain = scanner.nextLine();
                     int validInput = validateInput(returnMain, "q", "Q", 4);
 
@@ -570,6 +620,7 @@ public class Main {
                         print(RED + "Done!", 0);
                     }
                     break;
+
                 case 5:
                     int max = goodbyeMessages.length;
                     int index = random.nextInt(max - 1);
