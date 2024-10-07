@@ -3,7 +3,7 @@ Name: Qazi
 Program Name: Qazi_SpotIt
 Program Description: Hard-coded recreation of the popular game Spot It (Originally known as Dobble)
 Creation Date: 09/24/24
-Last Edit Date: INSERT TIME
+Last Edit Date: 10/07/24
 Ethics Declaration: “This code is my own work”
 */
 
